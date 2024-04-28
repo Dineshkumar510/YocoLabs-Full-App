@@ -1,0 +1,110 @@
+<div class="Navbar">
+  <nav class="navbar bg-primary">
+    <h2 class="mx-4"><i class="fa fa-user" routerLink=""></i>&nbsp; User Details</h2>
+    <div class="d-flex">
+         <span class="Username" *ngIf="UserName">Welcome: <b>{{UserName}}</b></span>
+         <button *ngIf="UserName" type="button" class="btn btn-danger mx-4" (click)="logout()">Logout</button>
+    </div>
+  </nav>
+</div>
+
+
+<div class="container-fluid mt-3">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="addUser m-3" *ngIf="userDetails.role == 'admin'">
+                      <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                      class="btn btn-success mx-2" (click)="AddEmp()">
+                      <i class="fa fa-plus"></i>&nbsp;Add User</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card p-3" *ngIf="EmployeeDetails.length !== 0">
+              <div class="table">
+                <table class="table table-striped">
+                  <thead>
+                    <th class="text-center">Employee ID</th>
+                    <th class="text-center"> Name</th>
+                    <th class="text-center"> Code</th>
+                    <th class="text-center">Salary(₹)</th>
+                    <th class="text-center" *ngIf="userDetails.role == 'admin'">Actions</th>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let data of EmployeeDetails; let i = index;">
+                      <td class="text-center">{{i + 1}}</td>
+                      <td class="text-center">{{data?.name}}</td>
+                      <td class="text-center">{{data?.employee_code}}</td>
+                      <td class="text-center">{{data?.salary}}/-</td>
+                      <td class="text-center" *ngIf="userDetails.role == 'admin'">
+                        <button class="btn btn-info" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                        (click)="Edit(data)">
+                        <i class="fa fa-pencil"></i>&nbsp;Edit</button>
+                        <button class="btn btn-danger mx-2" (click)="Delete(data)">
+                          <i class="fa fa-trash"></i>&nbsp;Delete</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="no-Data" *ngIf="EmployeeDetails.length == 0">
+                <h2>No Data Found, Please add some Users Data!</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">User Details</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form #empdetails="ngForm" (ngSubmit)="Onsubmit(empdetails)" novalidate>
+          <div class="mb-3">
+            <label for="name" class="form-label">Full Name</label>
+            <input type="text" class="form-control" id="name" name="name" ngModel required [(ngModel)]="name" minlength="5" maxlength="40">
+            <div *ngIf="empdetails && empdetails.controls['name']">
+              <div *ngIf="empdetails.controls['name'].invalid && (empdetails.controls['name'].dirty || empdetails.controls['name'].touched)" class="text-danger">
+                Full Name is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="employee_code" class="form-label">EmpCode</label>
+            <input type="text" class="form-control" id="employee_code" name="employee_code" ngModel required  [(ngModel)]="employee_code">
+            <div *ngIf="empdetails && empdetails.controls['employee_code']">
+              <div *ngIf="empdetails.controls['employee_code'].invalid && (empdetails.controls['employee_code'].dirty || empdetails.controls['employee_code'].touched)" class="text-danger">
+                EmpCode is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="salary" class="form-label">Salary</label>
+            <input type="number" class="form-control" id="salary" name="salary" ngModel required [(ngModel)]="salary"
+            minlength="4" maxlength="6">
+            <div *ngIf="empdetails && empdetails.controls['salary']">
+              <div *ngIf="empdetails.controls['salary'].invalid && (empdetails.controls['salary'].dirty || empdetails.controls['salary'].touched)" class="text-danger">
+                Salary is required.
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button *ngIf="showAdd && empdetails" type="submit" class="btn btn-primary" [disabled]="!empdetails.valid"
+             data-bs-dismiss="modal"[ngStyle]="{'cursor': !empdetails.valid ? 'not-allowed' : 'pointer'}">Add</button>
+            <button *ngIf="showUpdate && empdetails" type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="Update(empdetails)">Update</button>
+          </div>
+    </form>
+    </div>
+  </div>
+</div>
+</div>

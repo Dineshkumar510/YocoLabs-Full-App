@@ -1,0 +1,22 @@
+.no-Data{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20%;
+}
+
+.addUser{
+  display: flex;
+  justify-content: end;
+  align-items: end;
+}
+
+.Username{
+  margin-top: 2%;
+}
+
+.table{
+  height: 100%;
+  max-height: 35rem !important;
+  overflow: auto !important;
+}
